@@ -252,7 +252,7 @@ export default function Home(props) {
           <Grid container justify="center">
             <Grid item>
               <Link
-                href="http://localhost:3000/dashboard"
+                href="https://focuspocus.netlify.app/dashboard"
                 variant="body2"
                 target="_blank"
               >
