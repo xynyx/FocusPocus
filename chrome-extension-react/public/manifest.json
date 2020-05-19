@@ -5,8 +5,7 @@
   "permissions": [
     "activeTab",
     "declarativeContent",
-    "storage",
-    "*://*/*"
+    "storage"    
   ],  
   "background": {
     "scripts": [
