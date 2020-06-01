@@ -9,6 +9,15 @@ import Customization from "./Customization";
 import Blacklisted from "./Blacklisted";
 import QuotaSlider from "./QuotaSlider";
 import Navbar from "./Navbar";
+import { DashboardInterface } from "../helpers/interfaces";
+
+interface Props {
+  dashboardData: DashboardInterface;
+  addBlacklistedSite: any;
+  disableBlacklistedSite: any;
+  changeQuota: any;
+  setDashboard: any;
+}
 
 export const CardContext = createContext({});
 
@@ -42,29 +51,30 @@ const theme = createMuiTheme({
 });
 
 export default function Options({
-  blacklisted,
   addBlacklistedSite,
   disableBlacklistedSite,
   changeQuota,
   dashboardData,
   setDashboard,
-}) {
-  const { quota_today, topBlacklisted, user } = dashboardData;
+}: Props) {
 
-  const addTopSiteToUserBlacklist = hostname => {
+  const { quota, topBlacklisted, user, blacklisted } = dashboardData;
+
+
+  const addTopSiteToUserBlacklist = (hostname: string) => {
     addBlacklistedSite(hostname);
   };
 
   return (
     <DndProvider backend={Backend}>
       <CardContext.Provider value={{ addTopSiteToUserBlacklist }}>
-        <Navbar user={user} quota={quota_today} setDashboard={setDashboard} />
+        <Navbar user={user} quota={quota} setDashboard={setDashboard} />
         <ThemeProvider theme={theme}>
           <Container bgcolor="background.paper">
             <QuotaAndCustomization>
-              {quota_today && (
+              {quota && (
                 <QuotaSlider
-                  quota={quota_today}
+                  quota={quota}
                   changeQuota={changeQuota}
                   options={user.options}
                 />

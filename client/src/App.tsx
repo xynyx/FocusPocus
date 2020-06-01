@@ -29,10 +29,11 @@ function App() {
     typography: {
       fontFamily: "Amatic SC, sans-serif",
       fontSize: 25,
-      fontWeight: "700",
     },
   });
+
   const history = useHistory();
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -40,20 +41,20 @@ function App() {
           exact
           path={["/"]}
           render={() =>
-            !state.quota_today.allotment
+            !state.quota.allotment
               ? history.push("/login")
-              : history.push("/dashboard")
+              : history.push("/dashboard") as any
           }
         />
         <Route
           exact
           path={["/login", "/register"]}
           render={() =>
-            !state.quota_today.allotment ? (
+            !state.quota.allotment ? (
               <Landing setDashboard={setDashboard} />
             ) : (
               history.push("/dashboard")
-            )
+            ) as any
           }
         />
         <Route
@@ -65,7 +66,7 @@ function App() {
           exact
           path="/dashboard"
           render={() =>
-            state.quota_today.allotment && (
+            state.quota.allotment && (
               <Dashboard dashboardData={state} setDashboard={setDashboard} />
             )
           }
@@ -74,13 +75,12 @@ function App() {
           exact
           path="/options"
           render={() =>
-            state.quota_today.allotment && (
+            state.quota.allotment && (
               <Options
                 changeQuota={changeQuota}
                 addBlacklistedSite={addBlacklistedSite}
                 disableBlacklistedSite={disableBlacklistedSite}
                 dashboardData={state}
-                blacklisted={state.blacklisted}
                 setDashboard={setDashboard}
               />
             )

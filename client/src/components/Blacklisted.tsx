@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React from "react";
+import { useState, useContext } from "react";
 import BlacklistedCards from "./BlacklistedCards";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -9,7 +10,6 @@ import {
   CardActionArea,
   CardHeader,
   Card,
-  Box,
   Input,
   InputLabel,
   InputAdornment,
@@ -19,12 +19,19 @@ import AddIcon from "@material-ui/icons/Add";
 import LanguageIcon from "@material-ui/icons/Language";
 import useFormFields from "../hooks/useFormFields";
 import removeProtocol from "../helpers/removeProtocol";
+import isUrl from "../helpers/isUrl";
 import { ItemTypes } from "../utils/constants";
 import { CardContext } from "./Options";
 import { useDrop } from "react-dnd";
-import isUrl from "../helpers/isUrl";
+// import {} from 'styled-components/cssprop';
 
-const Container = styled(Box)`
+interface Props {
+  blacklisted: object[];
+  disableBlacklistedSite: any;
+  addBlacklistedSite: any;
+}
+
+const Container = styled.div`
   min-height: 86vh;
   padding: 0 1% 0 2%;
   width: 25%;
@@ -91,10 +98,10 @@ export default function Blacklisted({
   blacklisted,
   disableBlacklistedSite,
   addBlacklistedSite,
-}) {
+}: Props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const { addTopSiteToUserBlacklist } = useContext(CardContext);
+  const { addTopSiteToUserBlacklist } = useContext(CardContext as any);
   const [error, setError] = useState(false);
 
   // To expand blacklist Add Site button
@@ -106,7 +113,7 @@ export default function Blacklisted({
     host_name: "",
   });
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
 
     // Do initial check using regex
@@ -141,14 +148,14 @@ export default function Blacklisted({
     // Drop accepts only type CARD
     accept: ItemTypes.CARD,
     // On drop, add site to user blacklist
-    drop: (item, monitor) => addTopSiteToUserBlacklist(item.hostname),
+    drop: (item: any, monitor) => addTopSiteToUserBlacklist(item.hostname),
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
   });
 
   // List of user's blacklisted sites
-  const blacklistList = blacklisted.map(website => {
+  const blacklistList = blacklisted.map((website: any) => {
     return (
       <BlacklistedCards
         deleteSite={disableBlacklistedSite}
@@ -161,7 +168,7 @@ export default function Blacklisted({
   });
 
   return (
-    <Container ref={drop} style>
+    <Container ref={drop}>
       <Title>Blacklist</Title>
       <AddNew>
         <Background>
@@ -184,7 +191,8 @@ export default function Blacklisted({
                 <Input
                   className={classes.inputwidth}
                   error={error}
-                  helperText={error ? "Must be a valid URL" : "URL"}
+                  // TODO  - helper text not working now..?
+                  // helperText={error ? "Must be a valid URL" : "URL"}
                   required
                   id="host_name"
                   value={fields.host_name}

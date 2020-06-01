@@ -10,6 +10,12 @@ import Donut from "./Graphs/Donut";
 import Radial from "./Graphs/Radial";
 import Leaderboard from "./Graphs/Leaderboard";
 import Shameboard from "./Graphs/Shameboard";
+import { DashboardInterface } from "../helpers/interfaces";
+
+interface Props {
+  dashboardData: DashboardInterface;
+  setDashboard: any;
+}
 
 const Container = styled(Box)`
   padding: 5em;
@@ -27,11 +33,11 @@ const Wrapper = styled(Box)`
   @media (max-width: 1300px) {
     flex: 1 100%;
     order: 5;
-    padding-right: 0
+    padding-right: 0;
   }
 `;
 
-export default function Dashboard({ dashboardData, setDashboard }) {
+export default function Dashboard({ dashboardData, setDashboard }: Props) {
   const {
     donutGraph,
     lineGraph,
@@ -39,11 +45,11 @@ export default function Dashboard({ dashboardData, setDashboard }) {
     leaderboard,
     shameboard,
     user,
-    quota_today,
+    quota,
   } = dashboardData;
 
   const isOverQuota = () => {
-    return quota_today.used.minutes > quota_today.allotment.minutes;
+    return quota.used.minutes > quota.allotment.minutes;
   };
 
   // Create popup error if user is over quota for today
@@ -74,9 +80,9 @@ export default function Dashboard({ dashboardData, setDashboard }) {
           containerId="quota"
         />
       )}
-      <Navbar user={user} quota={quota_today} setDashboard={setDashboard} />
+      <Navbar user={user} quota={quota} setDashboard={setDashboard} />
       <Container flexWrap="wrap" display="flex">
-        <DailyQuotaUsed quota={quota_today} />
+        <DailyQuotaUsed quota={quota} />
         <LineGraph lineData={lineGraph} />
         <Paper component={Wrapper} elevation={24}>
           <Leaderboard leaderboard={leaderboard} />

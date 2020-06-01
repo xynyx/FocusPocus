@@ -49,12 +49,12 @@ const Container = styled.div`
   }
 `;
 
-export default function TopBlacklisted({ topBlacklisted }) {
+export default function TopBlacklisted({ topBlacklisted }: any) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const classes = useStyles();
 
-  const handlePopoverOpen = event => {
+  const handlePopoverOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -102,14 +102,15 @@ export default function TopBlacklisted({ topBlacklisted }) {
       </Popup>
 
       <GridList cellHeight={180} className={classes.gridList}>
-        {topBlacklisted.map(tile => (
-          <TopBlacklistCards
-            className={classes.cards}
-            key={tile.id}
-            hostname={tile.hostname}
-            name={tile.name}
-          />
-        ))}
+        {topBlacklisted.map(
+          (tile: { id: number; hostname: string; name: string }) => (
+            <TopBlacklistCards
+              key={tile.id}
+              hostname={tile.hostname}
+              name={tile.name}
+            />
+          )
+        )}
       </GridList>
     </Container>
   );

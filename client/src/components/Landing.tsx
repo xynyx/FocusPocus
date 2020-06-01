@@ -25,17 +25,24 @@ const GitHub = styled(IconButton)`
 
   @media (max-width: 1300px) {
     left: 0.2em !important;
-  top: 0.2em !important;
+    top: 0.2em !important;
   }
 `;
 
-export default function Landing({ setDashboard }) {
+const GithubLink = styled.a`
+  text-decoration: none;
+  color: black;
+`;
+
+export default function Landing({ setDashboard }: any) {
   const history = useHistory();
 
   return (
     <Container>
-      <GitHub href="https://github.com/LHL-FocusPocus/FocusPocus">
-        <GitHubIcon style={{ maxWidth: 35 }} />
+      <GitHub>
+        <GithubLink href="https://github.com/LHL-FocusPocus/FocusPocus">
+          <GitHubIcon style={{ maxWidth: 35 }} />
+        </GithubLink>
       </GitHub>
       <LogoText />
       <Route

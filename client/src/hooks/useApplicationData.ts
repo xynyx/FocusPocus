@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import reducer, {
@@ -6,14 +6,13 @@ import reducer, {
   CHANGE_BLACKLIST,
   CHANGE_QUOTA,
   SET_WEBSOCKET_GRAPHS,
-  SET_CUSTOMIZATIONS,
 } from "../reducers/application";
 
 const WEBSOCKET_URL =
   process.env.REACT_APP_WEBSOCKET_URL || "http://localhost:9000";
 
 export default function useApplicationData() {
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch]: any = useReducer(reducer, {
     blacklisted: [],
     donutGraph: [],
     leaderboard: [],
@@ -21,7 +20,7 @@ export default function useApplicationData() {
     radialGraph: [],
     shameboard: [],
     user: {},
-    quota_today: {},
+    quota: {},
   });
 
   const setDashboard = async () => {
@@ -52,19 +51,19 @@ export default function useApplicationData() {
 
     axios
       .get("/api/data/dashboard")
-      .then((dashboard) => {
+      .then(dashboard => {
         dispatch({
           type: SET_DASHBOARD_DATA,
           payload: dashboard.data,
         });
       })
-      .catch((e) => console.error(e));
+      .catch(e => console.error(e));
   }, []);
 
-  const disableBlacklistedSite = (blacklists_id) => {
+  const disableBlacklistedSite = (blacklists_id: number) => {
     axios
       .put(`/api/user/blacklists/disable/${blacklists_id}`, blacklists_id)
-      .then((res) => {
+      .then(res => {
         dispatch({
           type: CHANGE_BLACKLIST,
           id: res.data.id,
@@ -72,28 +71,32 @@ export default function useApplicationData() {
       });
   };
 
-  const changeQuota = (quotaStart, quotaTarget, quotaIncrement) => {
+  const changeQuota = (
+    quotaStart: number,
+    quotaTarget: number,
+    quotaIncrement: number
+  ) => {
     return axios
       .post("/api/user/adjust_quota", {
         quotaStart,
         quotaTarget,
         quotaIncrement,
       })
-      .then((res) => {
+      .then(res => {
         dispatch({
           type: CHANGE_QUOTA,
           allotment: quotaStart,
-        });        
+        });
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
       });
   };
 
-  const addBlacklistedSite = (host_name) => {
+  const addBlacklistedSite = (host_name: string) => {
     axios
       .post("/api/user/blacklists/add", { host_name })
-      .then((res) => {
+      .then(res => {
         const { id, hostname, name, category, website_id, user_id } = res.data;
         dispatch({
           type: CHANGE_BLACKLIST,
@@ -105,7 +108,7 @@ export default function useApplicationData() {
           website_id,
         });
       })
-      .catch((e) => console.error(e));
+      .catch(e => console.error(e));
   };
 
   return {

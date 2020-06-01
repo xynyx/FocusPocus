@@ -22,6 +22,16 @@ import { useHistory } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
 import formatNavbarText from "../helpers/formatNavbarText";
 import axios from "axios";
+import { QuotaData } from "../helpers/interfaces";
+
+interface Props {
+  quota: QuotaData;
+  user: {
+    first_name: string;
+    picture: string;
+  };
+  setDashboard: any;
+}
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -105,8 +115,9 @@ const Container = styled.div`
   width: 350px;
 `;
 // const EXTENSION_URL = "https://github.com/LHL-FocusPocus/FocusPocus/releases"
-const EXTENSION_URL = "https://chrome.google.com/webstore/detail/focus-pocus-extension/ognhkeempdpgnfkliplegljejeakonlg/"
-export default function Navbar({ user, quota, setDashboard }) {
+const EXTENSION_URL =
+  "https://chrome.google.com/webstore/detail/focus-pocus-extension/ognhkeempdpgnfkliplegljejeakonlg/";
+export default function Navbar({ user, quota, setDashboard }: Props) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -120,24 +131,19 @@ export default function Navbar({ user, quota, setDashboard }) {
   // Humanize time in more readable format given by quota data
   const used_quota = humanizeDuration(
     quota.used.minutes * 60000,
-    humanizeDurationOptions
+    humanizeDurationOptions as any
   );
 
   const allotment = humanizeDuration(
     quota.allotment.minutes * 60000,
-    humanizeDurationOptions
-  );
-
-  const total_browsing = humanizeDuration(
-    quota.all_browse_time.minutes * 60000,
-    humanizeDurationOptions
+    humanizeDurationOptions as any
   );
 
   const [state, setState] = useState({
-    left: false,
+    FocusPocus: false
   });
 
-  const toggleDrawer = (anchor, open) => event => {
+  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -160,7 +166,7 @@ export default function Navbar({ user, quota, setDashboard }) {
       });
   };
 
-  const list = anchor => (
+  const list = (anchor: string) => (
     <Container
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
@@ -199,11 +205,7 @@ export default function Navbar({ user, quota, setDashboard }) {
             <ListItemText primary={text} />
           </ListItem>
         ))}
-        <a
-          href={EXTENSION_URL}
-          target="_blank"
-          className={classes.anchor}
-        >
+        <a href={EXTENSION_URL} target="_blank" className={classes.anchor}>
           <ListItem
             button
             key="extension"

@@ -3,7 +3,7 @@ export const CHANGE_BLACKLIST = "CHANGE_BLACKLIST";
 export const CHANGE_QUOTA = "CHANGE_QUOTA";
 export const SET_WEBSOCKET_GRAPHS = "SET_WEBSOCKET_GRAPHS";
 
-export default function reducer(state, action) {
+export default function reducer(state: any, action: any) {
   switch (action.type) {
     case SET_DASHBOARD_DATA:
       // If user has not adjusted their increment or target, set default values here to allow page to load
@@ -46,7 +46,9 @@ export default function reducer(state, action) {
       } else {
         // Find index where the blacklisted site lives
         const siteIndex = state.blacklisted.indexOf(
-          state.blacklisted.find(site => site.blacklists_id === id)
+          state.blacklisted.find(
+            (site: { blacklists_id: number }) => site.blacklists_id === id
+          )
         );
 
         clonedBlacklist.splice(siteIndex, 1);
@@ -57,7 +59,7 @@ export default function reducer(state, action) {
       };
 
     case CHANGE_QUOTA:
-      const { used, all_browse_time } = state.quota_today;
+      const { used, all_browse_time } = state.quota;
       const newQuota = {
         minutes: action.allotment,
       };
@@ -74,16 +76,21 @@ export default function reducer(state, action) {
 
       return {
         ...state,
-        quota_today: quotaData,
+        quota: quotaData,
       };
 
     case SET_WEBSOCKET_GRAPHS:
-      const { quota_today, donutGraph, radialGraph } = action.payload;
+      const { quota, donutGraph, radialGraph } = action.payload;
       return {
         ...state,
-        quota_today,
+        quota,
         donutGraph,
         radialGraph,
       };
+
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      );
   }
 }
