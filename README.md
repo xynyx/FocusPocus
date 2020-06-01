@@ -24,6 +24,9 @@ https://youtu.be/8zMjdD9YEPw - Presented to the general audience as part of Ligh
 - Taha Rizvi - https://github.com/riztaha
 - Jimmy Peng - https://github.com/jpqy
 
+## Additions (by xynyx)
+- Converted client to Typescript
+
 ## Stack
 Front-end: React.js, Material-UI, amCharts, React DnD
 
